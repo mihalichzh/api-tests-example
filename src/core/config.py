@@ -15,6 +15,10 @@ class Config:
     def api_base_url() -> str:
         return Config.get_env_var_or_throw("API_BASE_URL")
 
+    @staticmethod
+    def api_key() -> str:
+        return Config.get_env_var_or_throw("API_KEY")
+
 
 class MissingEnvironmentVariable(Exception):
     pass

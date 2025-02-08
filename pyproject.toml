@@ -3,7 +3,7 @@ name = "api-tests-example"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Mikhail Zheltyshev",email = "mishzheltyshev1993@gmail.com"}
+    { name = "Mikhail Zheltyshev", email = "mishzheltyshev1993@gmail.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.12"
@@ -22,6 +22,10 @@ urljoin = "^1.0.0"
 # pytest
 pytest = "^8.3.4"
 allure-pytest = "^2.13.5"
+
+# utils
+pyhamcrest = "^2.1.0"
+faker = "^35.2.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

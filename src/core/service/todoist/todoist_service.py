@@ -1,11 +1,11 @@
 from dataclasses import asdict
 from typing import List
 
-from core.client.api_client import ApiClient, ClientConfig
-from core.service.base_service import BaseService
-from core.service.response_container import ResponseContainer
-from core.service.todoist.models.ProjectData import ProjectData
-from core.service.todoist.models.create_project.CreateProjectRequest import CreateProjectRequest
+from src.core.client.api_client import ApiClient, ClientConfig
+from src.core.service.base_service import BaseService
+from src.core.service.response_container import ResponseContainer
+from src.core.service.todoist.models.ProjectData import ProjectData
+from src.core.service.todoist.models.create_project.CreateProjectRequest import CreateProjectRequest
 
 
 class TodoistService(BaseService):
@@ -33,7 +33,7 @@ class TodoistService(BaseService):
             )
 
     def get_all_projects(self) -> ResponseContainer[List[ProjectData]]:
-        with self._context_step("create new project"):
+        with self._context_step("get all projects"):
             response = self.client.get(
                 path="/rest/v2/projects",
                 headers={"Authorization": f"Bearer {self.api_key}"} if self.api_key else None

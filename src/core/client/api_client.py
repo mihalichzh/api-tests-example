@@ -1,3 +1,4 @@
+import json
 from dataclasses import dataclass
 from http import HTTPMethod
 from typing import Optional, Mapping, Any, Union
@@ -43,7 +44,7 @@ class ApiClient:
             headers=headers,
             data=body,
         )
-        self._attach_curlified_request_to_allure(response)
+        self._attach_request_response_data_to_allure(response)
         return response
 
     def get(
@@ -77,8 +78,26 @@ class ApiClient:
         )
 
     @staticmethod
-    def _attach_curlified_request_to_allure(response: Response):
+    def _attach_request_response_data_to_allure(response: Response):
+        # attach curlified request
         curl_request = curlify.to_curl(response.request)
         allure.attach(
             curl_request, name="Request", attachment_type=allure.attachment_type.TEXT
         )
+
+        # attach response
+        response_data = {
+            "status_code": response.status_code,
+            "headers": dict(**response.headers),
+            "content": ApiClient._get_response_content_for_attachment(response),
+        }
+        allure.attach(
+            json.dumps(response_data, indent=4), name="Response", attachment_type=allure.attachment_type.TEXT
+        )
+
+    @staticmethod
+    def _get_response_content_for_attachment(response: Response) -> dict | str:
+        try:
+            return response.json()
+        except json.JSONDecodeError:
+            return response.text

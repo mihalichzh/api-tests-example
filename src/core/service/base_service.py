@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 import allure
 
-from core.client.api_client import ApiClient
+from src.core.client.api_client import ApiClient
 
 
 class BaseService:

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from core.service.todoist.models.ViewStyle import ViewStyle
+from src.core.service.todoist.models.ViewStyle import ViewStyle
 
 
 @dataclass
