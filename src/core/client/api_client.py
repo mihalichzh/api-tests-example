@@ -1,6 +1,6 @@
-import typing
 from dataclasses import dataclass
 from http import HTTPMethod
+from typing import Optional, Mapping, Any, Union
 
 import allure
 import curlify
@@ -14,7 +14,7 @@ from urllib3 import Retry
 @dataclass
 class ClientConfig:
     base_url: str
-    headers: typing.Mapping[str, str] | None = None
+    headers: Optional[Mapping[str, str]] = None
     retry_strategy: Retry = Retry(
         total=3, backoff_factor=0.1, status_forcelist=[429, 500, 502, 503, 504]
     )
@@ -27,14 +27,15 @@ class ApiClient:
         self.client = requests.Session()
         self.client.mount("http://", adapter)
         self.client.mount("https://", adapter)
-        self.client.headers.update(config.headers)
+        if config.headers:
+            self.client.headers.update(config.headers)
 
     def request(
-        self,
-        method: str | HTTPMethod,
-        path: str,
-        headers: typing.Mapping[str, str] | None = None,
-        body: str | None = None,
+            self,
+            method: Union[str, HTTPMethod],
+            path: str,
+            headers: Optional[Mapping[str, str]] = None,
+            body: Optional[Any] = None,
     ) -> Response:
         response = self.client.request(
             method=method,
@@ -46,30 +47,30 @@ class ApiClient:
         return response
 
     def get(
-        self,
-        path: str,
-        headers: typing.Mapping[str, str] | None = None,
-        body: str | None = None,
+            self,
+            path: str,
+            headers: Optional[Mapping[str, str]] = None,
+            body: Optional[Any] = None,
     ) -> Response:
         return self.request(
             method=HTTPMethod.GET, path=path, headers=headers, body=body
         )
 
     def post(
-        self,
-        path: str,
-        headers: typing.Mapping[str, str] | None = None,
-        body: str | None = None,
+            self,
+            path: str,
+            headers: Optional[Mapping[str, str]] = None,
+            body: Optional[Any] = None,
     ) -> Response:
         return self.request(
             method=HTTPMethod.POST, path=path, headers=headers, body=body
         )
 
     def delete(
-        self,
-        path: str,
-        headers: typing.Mapping[str, str] | None = None,
-        body: str | None = None,
+            self,
+            path: str,
+            headers: Optional[Mapping[str, str]] = None,
+            body: Optional[Any] = None,
     ) -> Response:
         return self.request(
             method=HTTPMethod.DELETE, path=path, headers=headers, body=body
