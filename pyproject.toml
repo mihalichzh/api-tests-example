@@ -1,0 +1,28 @@
+[project]
+name = "api-tests-example"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Mikhail Zheltyshev",email = "mishzheltyshev1993@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+# requests
+requests = "^2.32.3"
+curlify = "^2.2.1"
+urljoin = "^1.0.0"
+
+# pytest
+pytest = "^8.3.4"
+allure-pytest = "^2.13.5"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
