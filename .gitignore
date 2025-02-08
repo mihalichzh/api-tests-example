@@ -1,0 +1,22 @@
+# ide
+.idea/
+*.iml
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+# allure
+allure-results/
+allure-report/
+
+# compiled files
+**/__pycache__/
+*.py[cod]
+
+# system
+.DS_Store
