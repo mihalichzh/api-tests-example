@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
 from http import HTTPMethod
-from typing import Optional, Mapping, Any, Union
+from typing import Any, Mapping, Optional, Union
 
 import allure
 import curlify
@@ -32,11 +32,11 @@ class ApiClient:
             self.client.headers.update(config.headers)
 
     def request(
-            self,
-            method: Union[str, HTTPMethod],
-            path: str,
-            headers: Optional[Mapping[str, str]] = None,
-            body: Optional[Any] = None,
+        self,
+        method: Union[str, HTTPMethod],
+        path: str,
+        headers: Optional[Mapping[str, str]] = None,
+        body: Optional[Any] = None,
     ) -> Response:
         response = self.client.request(
             method=method,
@@ -48,30 +48,30 @@ class ApiClient:
         return response
 
     def get(
-            self,
-            path: str,
-            headers: Optional[Mapping[str, str]] = None,
-            body: Optional[Any] = None,
+        self,
+        path: str,
+        headers: Optional[Mapping[str, str]] = None,
+        body: Optional[Any] = None,
     ) -> Response:
         return self.request(
             method=HTTPMethod.GET, path=path, headers=headers, body=body
         )
 
     def post(
-            self,
-            path: str,
-            headers: Optional[Mapping[str, str]] = None,
-            body: Optional[Any] = None,
+        self,
+        path: str,
+        headers: Optional[Mapping[str, str]] = None,
+        body: Optional[Any] = None,
     ) -> Response:
         return self.request(
             method=HTTPMethod.POST, path=path, headers=headers, body=body
         )
 
     def delete(
-            self,
-            path: str,
-            headers: Optional[Mapping[str, str]] = None,
-            body: Optional[Any] = None,
+        self,
+        path: str,
+        headers: Optional[Mapping[str, str]] = None,
+        body: Optional[Any] = None,
     ) -> Response:
         return self.request(
             method=HTTPMethod.DELETE, path=path, headers=headers, body=body
@@ -92,7 +92,9 @@ class ApiClient:
             "content": ApiClient._get_response_content_for_attachment(response),
         }
         allure.attach(
-            json.dumps(response_data, indent=4), name="Response", attachment_type=allure.attachment_type.TEXT
+            json.dumps(response_data, indent=4),
+            name="Response",
+            attachment_type=allure.attachment_type.TEXT,
         )
 
     @staticmethod
