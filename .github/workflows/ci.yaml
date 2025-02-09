@@ -55,6 +55,12 @@ jobs:
         with:
           poetry-version: '2.0.1'
 
+      - name: Load cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+
       - name: Run linter
         run: poetry run ruff check
 
@@ -75,6 +81,12 @@ jobs:
         uses: abatilo/actions-poetry@v4
         with:
           poetry-version: '2.0.1'
+
+      - name: Load cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ hashFiles('poetry.lock') }}
 
       - name: Run tests
         run: poetry run pytest
