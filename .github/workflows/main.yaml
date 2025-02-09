@@ -16,7 +16,8 @@ jobs:
   install_dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/actions/prepare_environment
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-environment
       - name: Install dependencies
         run: poetry install --no-root --with dev
 
@@ -26,8 +27,9 @@ jobs:
     needs: install_dependencies
     if: github.event_name == 'pull_request'
     steps:
-      - uses: ./.github/actions/prepare_environment
-      - name: Install dependencies
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-environment
+      - name: Run linter
         run: poetry run ruff check
 
 
@@ -36,7 +38,8 @@ jobs:
     needs: [ install_dependencies, lint ]
     #if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.inputs.test == 'true')
     steps:
-      - uses: ./.github/actions/prepare_environment
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-environment
       - name: Run tests
         env:
           API_TOKEN: ${{ secrets.API_TOKEN }}
