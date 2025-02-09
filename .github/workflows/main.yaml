@@ -50,7 +50,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: PyTest Tests
+          name: test report
           path: ${{ env.JUNIT_XML_PATH }}
           reporter: java-junit
 
