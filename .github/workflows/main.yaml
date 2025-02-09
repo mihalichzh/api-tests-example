@@ -16,7 +16,7 @@ jobs:
   install_dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/prepare_environment.yaml
+      - uses: .github/workflows/prepare_environment.yaml
         with:
           run_command: poetry install --no-root --with dev
 
@@ -26,7 +26,7 @@ jobs:
     needs: install_dependencies
     if: github.event_name == 'pull_request'
     steps:
-      - uses: ./.github/workflows/prepare_environment.yaml
+      - uses: .github/workflows/prepare_environment.yaml
         with:
           run_command: poetry run ruff check
 
@@ -36,6 +36,6 @@ jobs:
     needs: [ install_dependencies, lint ]
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.inputs.test == 'true')
     steps:
-      - uses: ./.github/workflows/prepare_environment.yaml
+      - uses: .github/workflows/prepare_environment.yaml
         with:
           run_command: poetry run pytest
