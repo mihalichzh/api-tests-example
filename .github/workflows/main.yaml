@@ -42,6 +42,6 @@ jobs:
       - uses: ./.github/actions/prepare-environment
       - name: Run tests
         env:
-          API_TOKEN: ${{ secrets.API_TOKEN }}
+          API_KEY: ${{ secrets.API_KEY }}
           API_BASE_URL: ${{ env.API_BASE_URL }}
         run: poetry run pytest
