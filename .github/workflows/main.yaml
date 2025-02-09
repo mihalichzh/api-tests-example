@@ -1,16 +1,16 @@
 name: Test Workflow
 
 on:
-  #push:
-  #  branches: [ main, develop ]
-  #pull_request:
-  #  branches: [ main, develop ]
-  workflow_dispatch:
-    inputs:
-      test:
-        description: 'Run tests'
-        required: false
-        type: boolean
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  # workflow_dispatch:
+  #   inputs:
+  #     test:
+  #       description: 'Run tests'
+  #       required: false
+  #       type: boolean
 
 jobs:
   install_dependencies:
@@ -29,7 +29,7 @@ jobs:
 
   test:
     needs: [ install_dependencies, lint ]
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.inputs.test == 'true')
+    #if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.inputs.test == 'true')
     uses: ./.github/workflows/prepare_environment.yaml
     with:
-      run_command: poetry run pytest
+      run_command: API_TOKEN=${{ secrets.API_TOKEN }} poetry run pytest
