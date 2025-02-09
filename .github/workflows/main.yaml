@@ -48,16 +48,16 @@ jobs:
         env:
           API_KEY: ${{ secrets.API_KEY }}
           API_BASE_URL: ${{ vars.API_BASE_URL }}
-        run: poetry run pytest --alluredir $ALLURE_RESULTS_PATH
+        run: poetry run pytest --alluredir ${{ env.ALLURE_RESULTS_PATH }}
       - name: Prepare Allure Report
         uses: simple-elf/allure-report-action@v1.12
         if: always()
         id: allure-report
         with:
-          allure_results: $ALLURE_RESULTS_PATH
-          allure_report: $ALLURE_REPORT_PATH
+          allure_results: ${{ env.ALLURE_RESULTS_PATH }}
+          allure_report: ${{ env.ALLURE_REPORT_PATH }}
       - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: $ALLURE_RESULTS_PATH
+          path: ${{ env.ALLURE_REPORT_PATH }}
