@@ -28,11 +28,6 @@ jobs:
         with:
           poetry-version: '2.0.1'
 
-      - name: Prepare virtual environment
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-
       - name: Prepare cache dependencies
         uses: actions/cache@v3
         with:
