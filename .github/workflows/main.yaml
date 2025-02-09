@@ -43,4 +43,5 @@ jobs:
       - name: Run tests
         env:
           API_TOKEN: ${{ secrets.API_TOKEN }}
+          API_BASE_URL: ${{ env.API_BASE_URL }}
         run: poetry run pytest
