@@ -71,7 +71,7 @@ jobs:
       - name: Publish Allure Report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: ${{ env.ALLURE_PAGES_BRANCH }}
-          PUBLISH_DIR: ${{ env.ALLURE_HISTORY_PATH }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ env.ALLURE_HISTORY_PATH }}
+          publish_branch: ${{ env.ALLURE_PAGES_BRANCH }}
