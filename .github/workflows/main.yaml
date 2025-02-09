@@ -1,0 +1,81 @@
+name: Test Workflow
+
+env:
+  ALLURE_RESULTS_PATH: allure-results
+  ALLURE_REPORT_PATH: allure-report
+  ALLURE_HISTORY_PATH: allure-history
+  ALLURE_PAGES_BRANCH: gh-pages
+  ALLURE_PAGES_REPORTS_PATH: gh-pages
+  JUNIT_XML_PATH: report/test.xml
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  install_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-environment
+      - name: Install dependencies
+        run: poetry install --no-root --with dev
+
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-environment
+      - name: Run linter
+        run: poetry run ruff check
+
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [ install_dependencies, lint ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-environment
+      - name: Run tests
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: poetry run pytest --junitxml=${{ env.JUNIT_XML_PATH }}
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: test report
+          path: ${{ env.JUNIT_XML_PATH }}
+          reporter: java-junit
+
+      # Allure report publishing is disabled due to potential sensitive data exposure
+        #run: poetry run pytest --alluredir ${{ env.ALLURE_RESULTS_PATH }}
+      #- name: Get Allure history
+      #  uses: actions/checkout@v4
+      #  if: always()
+      #  continue-on-error: true
+      #  with:
+      #    ref: ${{ env.ALLURE_PAGES_BRANCH }}
+      #    path: ${{ env.ALLURE_PAGES_REPORTS_PATH }}
+      #- name: Prepare Allure Report
+      #  uses: simple-elf/allure-report-action@v1.12
+      #  if: always()
+      #  id: allure-report
+      #  with:
+      #    allure_results: ${{ env.ALLURE_RESULTS_PATH }}
+      #    allure_report: ${{ env.ALLURE_REPORT_PATH }}
+      #    allure_history: ${{ env.ALLURE_HISTORY_PATH }}
+      #    keep_reports: 20
+      #- name: Publish Allure Report to Github Pages
+      #  if: always()
+      #  uses: peaceiris/actions-gh-pages@v4
+      #  with:
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #    publish_dir: ${{ env.ALLURE_HISTORY_PATH }}
+      #    publish_branch: ${{ env.ALLURE_PAGES_BRANCH }}

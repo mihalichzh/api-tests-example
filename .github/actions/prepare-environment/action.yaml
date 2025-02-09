@@ -1,0 +1,17 @@
+name: Prepare Environment
+description: Combines environment setup actions
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - uses: abatilo/actions-poetry@v4
+      with:
+        poetry-version: '2.0.1'
+    - name: Prepare cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ hashFiles('poetry.lock') }}
